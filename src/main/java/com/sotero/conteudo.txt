@@ -1,0 +1,50 @@
+O Data Warehouse (DW) se trata, sem sombras de dúvidas, da mais importante tecnologia existente no desenvolvimento de soluções de Business Intelligence (BI). Ela é a base para o armazenamento das informações necessárias para a utilização por gestores e analistas na tomada de decisão.
+Fonte de dados: abrange todos os dados de origem que irão compor as informações do DW. Compreende os sistemas OLTP, arquivos em diversos formatos (XLS, TXT, etc), sistemas de CRM, ERP, entre vários outros.
+ETL: o ETL, do inglês Extract, Transform and Load, é o principal processo de condução dos dados até o armazenamento definitivo no DW. É responsável por todas as tarefas de extração, tratamento e limpeza dos dados, e inserção na base do DW.
+Staging Area: a Staging Area é uma área de armazenamento intermediário situada dentro do processo de ETL. Auxilia a transição dos dados das origens para o destino final no DW.
+Data Warehouse: essa é a estrutura propriamente dita de armazenamento das informações decisivas. Apenas os dados com valor para a gestão corporativa estarão reunidos no DW.
+Data Mart: o Data Mart é uma estrutura similar ao do DW, porém com uma proporção menor de informações. Trata-se de um subconjunto de informações do DW que podem ser identificados por assuntos ou departamentos específicos. O conjunto de Data Marts em conformidade dentro da organização compõe o DW.
+OLAP: o OLAP, do inglês On-line Analytical Processing, na arquitetura de um DW se refere as ferramentas com capacidade de análise em múltiplas perspectivas das informações armazenadas.
+Data Mining: Data Mining ou Mineração de Dados, se refere as ferramentas com capacidade de descoberta de conhecimento relevante dentro do DW. Encontram correlações e padrões dentro dos dados armazenados.
+
+Vamos conhecer então as sete etapas de construção do DW:
+
+Levantamento das necessidades: devemos antes de tudo fazer o levantamento de todas as informações desejadas pelo usuário. Nesse primeiro momento fazemos o cruzamento de Dimensões e Fatos necessários para alcançar os anseios dos gestores. Nesse primeiro momento trabalhamos em O QUÊ o DW terá, e não O COMO, por isso não devemos nos preocupar com a existência efetiva dos dados e sim com os desejos requisitados.
+Mapeamento dos dados: nessa etapa fazemos o mapeamento dos dados, identificando a fonte e como chegar até eles. Aqui vemos a viabilidade dos desejos elencados na primeira etapa, verificando a existência ou não dos dados para o alcance das necessidades solicitadas.
+Construção da Staging Area: após o mapeamento, construímos a estrutura chamada Staging Area, que se trata da área de transição dos dados do DW. Nessa área os dados são copiados e desacoplados dos sistemas de operação (OLTP) e recebem o devido tratamento para as futuras cargas nas tabelas de Fatos e Dimensões.
+Construção das Dimensões: construímos nessa etapa a estrutura das Dimensões que farão parte do DW. Definimos também a historicidade que os dados irão possuir nas Dimensões.
+Construção ds(s) Fato(s): construímos nessa etapa (após a construção das Dimensões) a(s) estrutura(s) da(s) Fato(s). Aqui é avaliado e definido a granularidade da informação que será armazenada em cada Fato. Avaliamos também a expectativa de crescimento e de armazenamento que serão utilizados.
+Definição do processo geral de carga: após concluirmos as etapas anteriores, precisamos criar o motor para que tudo seja carregado, atualizado, orquestrado e processado de forma automática e ordenada. Por isso, a necessidade do processo geral de carga que é o “cérebro” do DW.
+Criação dos metadados: por fim, precisamos desenvolver toda a documentação dos metadados, que incluem o processo de construção e o dicionário de dados. Os metadados fornecem apoio importante para a gestão do conhecimento.
+Lembrando que o Data Mart é a divisão do DW em subconjuntos de informações organizadas por assuntos específicos. Logo, todas essas etapas, com exceção do “levantamento das necessidades” (que deve ser realizada, preferencialmente, uma única vez), devem ser repetidas a cada novo Data Mart criado.
+
+Campo texto em Dimensões e Fatos
+Os campos de texto aberto (como observações, detalhes e etc) podem causar oneração do DW. Esses atributos custam grande espaço de armazenamento na base consolidada, além de tirarem o foco gerencial das informações do DW. Por isso, devemos evitar ao máximo a inclusão desses dados, questionando sempre sua necessidade quando for solicitado.
+
+Construção do DW pensando apenas em necessidades operacionais
+O DW conceitualmente visa atender desejos estratégicos, pois as necessidades operacionais são essencialmente extraídas pelos próprios sistemas transacionais (OLTP). Construir o DW visando necessidades operacionais impede o real benefício à organização e transforma uma potencial solução em um enorme "elefante branco".
+
+Utilização de chaves operacionais para junção de Dimensões e Fatos
+Não podemos utilizar chaves das tabelas operacionais para junções entre Dimensões e Fatos. Devemos utilizar as surrogate keys (chaves artificiais ou substitutas) pois só assim é possível tratar dados históricos nas tabelas de Fatos e o versionamento (modificações) dos dados nas Dimensões. Sem as chaves substitutas esse artifício é inviabilizado.
+
+Modelar o DW com base em uma visão específica ou necessidade pontual
+O DW depois de pronto deve permitir a flexibilização de cruzamento das informações da forma que o usuário, por ventura, necessitar. Por isso, não devemos construir visando uma necessidade pontual ou uma análise única do problema.
+
+Não manter a conformidade entre Dimensões e Fatos nos diversos Data Marts
+Um grande problema é a falta de conformidade entre dados do DW, causando retrabalho e falta de padronização nas informações apresentadas. Por isso, devemos sempre elaborar a modelagem tendo em vista a reutilização dos objetos nos diferentes Data Marts para que, dessa forma, o projeto tenha eficácia e consistência.
+
+Negligenciar o versionamento (alterações) dos dados nas Dimensões
+Nos projetos de DW não podemos subestimar a necessidade de armazenar as mudanças dos campos (atributos) das Dimensões. Dizer que os dados nunca vão alterar ou que os usuários nunca precisarão saber das mudanças ocorridas nas informações ao longo do tempo requer ponderação e muito cuidado. Devemos considerar todas as possibilidades – incluindo a mudança de desejo do usuário – e elaborar o projeto (modelagem) de forma que suporte futuras alterações na estrutura do DW com o menor impacto possível.
+
+Priorizar o tipo de modelagem snowflake ao invés do star schema
+O star schema (chamado também de modelo estrela) deve ser sempre priorizado. Esse tipo de modelagem possui maior intuitividade e melhor desempenho nas consultas que serão executadas no DW. Por isso, devemos evitar ao máximo o modelo snowflake (chamado também de modelo floco de neve) e utilizá-lo apenas nas exceções onde o star schema não pode ser aplicado.
+
+Esses são alguns exemplos de erros que devem ser evitados no desenvolvimento de um DW. Porém existem outros e devemos ter total cuidado e atenção na elaboração do projeto para que não haja grande retrabalho e custos adicionais que podem, até mesmo, inviabilizar o DW. Dessa forma, minimizamos os ricos das adversidades e aumentando as chances de sucesso do projeto.
+
+Nos meus últimos anos de pesquisas e trabalho na área de tecnologia - mais especificamente na área de análise de dados - tenho me deparado com grande confusão em torno do Business Analytics. Por isso, procurei aqui desmistificar e criar um guia rápido para aplicação do B.A. nas empresas.
+
+Business Analytics é muito amplo: contempla mineração de dados, big data, data science, procedimentos de descoberta de conhecimento e, claro, o envolvimento da área de negócio (do business). O principal objetivo é a obtenção de informações mais ricas, profundas e precisas sobre clientes, parceiros e operações de negócio. O interessante é a obtenção em tempo real, com mecanismos que possam prever minuciosamente o comportamento do cliente a partir desses dados.
+
+Os estatísticos e cientistas da computação sempre se depararam com um grande problema: escassez de dados. Por isso, as previsões nunca foram precisas o suficiente. Com o advento do big data e com o poder computacional dobrando em um curto espaço de tempo, passamos a ter dados disponíveis em abundância e sobre qualquer assunto. Aí entra o conceito de Data Science: aplicação de modelos que fazem previsões a partir da identificação de padrões do conjunto de dados de uma empresa. Modelos de deep learning estão alcançando previsões na casa de 99% de exatidão.
+
+O conceito acima ainda se confunde bastante com o Business Intelligence. Diferente do Analytics, o BI tem um olhar para o passado, faz a leitura de um conjunto de dados em um data warehouse, extrai informação útil e elabora um dashboard para apoiar os tomadores de decisão que precisam empregar a sua intuição combinada com sua experiência para realizar essa tarefa.
